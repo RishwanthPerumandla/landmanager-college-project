@@ -82,7 +82,7 @@ const verifyOTP = async (req, res) => {
     const newCalculatedHash = crypto.createHmac('sha256', smsKey).update(data).digest('hex');
 
     if (newCalculatedHash === hashValue) {
-      const accessToken = jwt.sign({ phoneno, id: newUser._id, role: 'CSM' }, JWT_AUTH_TOKEN, { expiresIn: '180s' });
+      const accessToken = jwt.sign({ phoneno, id: newUser._id, role: 'CSM' }, JWT_AUTH_TOKEN, { expiresIn: '360s' });
       const refreshToken = jwt.sign({ phoneno, id: newUser._id, role: 'CSM' }, JWT_REFRESH_TOKEN, { expiresIn: '1y' });
       refreshTokens.push(refreshToken);
 
