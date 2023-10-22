@@ -1,4 +1,5 @@
 const Asset = require('../models/AssetModel'); // Import your Asset model
+const { nanoid } = require("nanoid");
 
 const AssetController = {
   getAssetsbyUser: async (req, res) => {
@@ -31,6 +32,29 @@ const AssetController = {
     try {
       const newAsset = new Asset(assetData);
       await newAsset.save();
+
+      // Add the ID of the new asset to the user's assets array
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user._id,
+        { $push: { assets: newAsset._id } },
+        { new: true }
+      );    
+      // Create a default project for the newly added asset
+      const defaultProject = new Project({
+        uid: nanoid(5), // Set a unique identifier for the default project
+        title: 'Monthly Updates',
+        description: `Regular Physical visits to the land.
+                      Video of the Property Every Quarter
+                      Montly market updates about surroundings
+                      Developments around Surrounding Area`,
+        user_id: req.user._id,
+        asset_id: newAsset._id, // Link the project to the newly added asset
+        startDate: Date.now()
+        // Set other default project properties as needed
+      });
+
+      await defaultProject.save();
+      
       return res.status(201).json({ success: true, message: 'Asset added successfully', data: newAsset });
     } catch (err) {
       console.error(err);
