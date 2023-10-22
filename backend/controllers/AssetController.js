@@ -1,5 +1,7 @@
+const {nanoid} = require('nanoid');
 const Asset = require('../models/AssetModel'); // Import your Asset model
-const { nanoid } = require("nanoid");
+const User = require('../models/UserModel'); // Import your Asset model
+const Project = require('../models/ProjectModel'); // Import your Asset model
 
 const AssetController = {
   getAssetsbyUser: async (req, res) => {
@@ -54,8 +56,12 @@ const AssetController = {
       });
 
       await defaultProject.save();
+
+      // Add the new project's ID to the asset's projects array
+      newAsset.projects.push(defaultProject._id); // Push the project ID to the projects array
+      await newAsset.save(); // Save the updated asset     
       
-      return res.status(201).json({ success: true, message: 'Asset added successfully', data: newAsset });
+      return res.status(201).json({ success: true, message: 'Asset added successfully', data: newAsset, defaultProject: defaultProject });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ success: false, message: 'Internal Server Error' });
