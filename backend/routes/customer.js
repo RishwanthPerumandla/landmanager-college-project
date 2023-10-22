@@ -1,0 +1,1 @@
+const authRoleMiddleware = require('./authRoleMiddleware');

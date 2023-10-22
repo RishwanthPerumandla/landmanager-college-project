@@ -11,7 +11,10 @@ var apiResponse = require("./helpers/apiResponse");
 
 
 var indexRouter = require("./routes/index");
-
+var authRouter = require("./routes/auth");
+// var customerRouter = require("./routes/Customer");
+// var paymentRouter = require("./routes/paymentRouter");
+// var adminClientRouter = require("./routes/admin_client");
 
 const app = express()
 
@@ -28,6 +31,12 @@ app.use(express.json())
 
 // Index Router
 app.use("/", indexRouter)
+app.use('/auth/', authRouter);
+
+// app.use("/admin/", adminClientRouter);
+// app.use("/auth-admin/", authRouter);
+// app.use("/customer/", customerRouter);
+// app.use("/payment/", paymentRouter);
 
 
 // throw 404 if URL not found
