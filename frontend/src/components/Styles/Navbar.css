@@ -1,0 +1,32 @@
+.BodyWeb {
+	background-color: #e5e5f7;
+	opacity: 0.8;
+	background-image: radial-gradient(#444cf7 0.5px, transparent 0.5px),
+		radial-gradient(#444cf7 0.5px, #e5e5f7 0.5px);
+	background-size: 20px 20px;
+	background-position: 0 0, 10px 10px;
+}
+
+.alert{
+	width: 100%;
+	margin: 3rem 0;
+	height: 3rem;
+	background: url(https://res.cloudinary.com/rivach/image/upload/v1659033141/Land%20Manager/alert_duszqw.png);
+	background-repeat: no-repeat;
+}
+
+/* .footer{
+	background-image: url('./../images/wave.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+} */
+
+.faq{
+	margin: 2rem 8rem;
+}
+
+@media only screen and (max-width: 500px) {
+	.faq{
+		margin: 1rem 2rem;
+	}
+}

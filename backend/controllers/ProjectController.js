@@ -164,11 +164,80 @@ async function getProjects(req, res) {
     }
   }
   
+  async function getProjectRequests(req, res) {
+    try {
+      const projects = await Project.find({ status: "open" })
+        .sort({ createdAt: -1 })
+        .exec();
   
+      return res.status(200).json({
+        success: true,
+        message: "Data retrieved successfully",
+        count: projects.length,
+        projects,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+      });
+    }
+  }
 
+  async function assignLM(req, res) {
+    try {
+      const { lm_id, lm_name, lm_phno, proj_id } = req.body;
+  
+      const updatedProject = await Project.findByIdAndUpdate(
+        proj_id,
+        { lm_id, lm_name, lm_phno },
+        { new: true, runValidators: true }
+      );
+  
+      if (!updatedProject) {
+        return res.status(404).json({
+          success: false,
+          message: "Project not found",
+        });
+      }
+  
+      const user_id = updatedProject.user_id;
+      const title = "Landmanager Assigned";
+      const body = "Hello Land Owner, a Landmanager has been assigned to you. Click to view.";
+      const imgUrl = "";
+  
+      const token = await User.findById(user_id).select('notifToken');
+  
+      if (!token) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+  
+      const result = await sendNotif([token.notifToken], title, body, imgUrl);
+  
+      return res.status(200).json({
+        success: true,
+        message: "Successfully updated",
+        projects: updatedProject,
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+      });
+    }
+  }
+  
+  
 module.exports = {
     createProjectRequest,
     getProjects,
     closeProject,
-    getSpecificProject
+    getSpecificProject,
+    getProjectRequests,
+    assignLM
 }

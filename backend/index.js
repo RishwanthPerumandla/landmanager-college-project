@@ -13,8 +13,8 @@ var apiResponse = require("./helpers/apiResponse");
 var indexRouter = require("./routes/index");
 var authRouter = require("./routes/auth");
 var customerRouter = require("./routes/customer");
-// var paymentRouter = require("./routes/paymentRouter");
-// var adminClientRouter = require("./routes/admin_client");
+var moderatorRouter = require("./routes/moderator");
+
 
 const app = express()
 
@@ -33,6 +33,7 @@ app.use(express.json())
 app.use("/", indexRouter)
 app.use('/auth/', authRouter);
 app.use("/customer/", customerRouter);
+app.use("/moderator/", moderatorRouter);
 
 // app.use("/admin/", adminClientRouter);
 // app.use("/auth-admin/", authRouter);
